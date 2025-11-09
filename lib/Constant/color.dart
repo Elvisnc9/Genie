@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors{
   static const Color dark = Color(0xFF040E00);
-  static const Color light = Color(0XFFFEAF2EF);
+  static const Color light = Color(0XFFFDAD7CD);
   static const Color berry = Color(0XFFF912F56);
   static const Color golden = Color(0XFFFF8C828);
   
