@@ -5,6 +5,7 @@ class AppColors{
   static const Color light = Color(0XFFFDAD7CD);
   static const Color berry = Color(0XFFF912F56);
   static const Color golden = Color(0XFFFF8C828);
+  static const Color mintty = Color(0XFFF97A87A);
   
 
 static const LinearGradient minty = LinearGradient(colors: [

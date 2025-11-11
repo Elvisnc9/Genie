@@ -37,10 +37,14 @@ dependencies:
   firebase_auth:
   the_responsive_builder:
   flutter_native_splash:
-  flutter_launcher_icons:
+  flutter_svg: 
+  animated_text_kit:
+  permission_handler: 
+  shared_preferences:
+  ar_flutter_plugin_plus: ^1.0.0
 
 dev_dependencies:
-  flutter_test:
+  flutter_test: 
     sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -49,6 +53,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -84,6 +89,7 @@ flutter:
    - family: Urbanist
      fonts:
       - asset: assets/fonts/Urbanist-VariableFont_wght.ttf
+        weight: 700      
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
@@ -94,3 +100,24 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# flutter_native_splash:
+#   color: "#040E00"
+#   image: 
+#   android: true
+#   ios: true
+#   web: false
+# android_12:
+#   image: assets/images/splash_logo.png
+#   color: "#040E00"
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/Launcher_icon.png"
+  remove_alpha_ios: true
+
+
+
+dependency_overrides:
+  vector_math: ^2.2.0

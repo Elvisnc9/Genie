@@ -1,8 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<uses-sdk android:minSdkVersion="24" />
+        <uses-permission android:name="android.permission.CAMERA" />
+<!-- ARCore specific features -->
+<uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
+<!-- You may also need internet if loading models from the web -->
+<uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="genie"
+        android:label=" GENIE"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
+<!-- Add this metadata inside the <application> tag to ensure ARCore is required -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
