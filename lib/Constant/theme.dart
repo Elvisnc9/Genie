@@ -19,6 +19,12 @@ final ThemeData Apptheme = ThemeData(
       fontSize: 15.sp,
       fontWeight: FontWeight.bold,
      color: AppColors.berry
+    ),
+    displaySmall: TextStyle(
+      fontFamily: 'Poppins',
+      fontSize: 17.sp,
+      fontWeight: FontWeight.bold,
+     color: Colors.white
     )
   )
 );

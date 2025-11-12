@@ -34,7 +34,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  firebase_auth:
   the_responsive_builder:
   flutter_native_splash:
   flutter_svg: 
@@ -42,6 +41,13 @@ dependencies:
   permission_handler: 
   shared_preferences:
   ar_flutter_plugin_plus: ^1.0.0
+  flutter_animate:
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.0
+  google_sign_in: ^6.2.1
+  flutter_facebook_auth: ^7.0.0
+  another_flushbar: ^1.12.32
+
 
 dev_dependencies:
   flutter_test: 
@@ -101,20 +107,19 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-# flutter_native_splash:
-#   color: "#040E00"
-#   image: 
-#   android: true
-#   ios: true
-#   web: false
-# android_12:
-#   image: assets/images/splash_logo.png
-#   color: "#040E00"
+flutter_native_splash:
+  color: "#040E00"
+  image: assets/icons/Splash_icon.png
+  android: true
+  ios: true
+  android_12:
+    image: assets/icons/Splash_icon.png
+    color: "#040E00"
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icons/Launcher_icon.png"
+  image_path: "assets/icons/Gennie.png"
   remove_alpha_ios: true
 
 

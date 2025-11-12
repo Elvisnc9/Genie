@@ -1,6 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:genie/Constant/color.dart';
+import 'package:genie/Presentation/Pages/Authentication/google_auth.dart';
 import 'package:genie/Presentation/Pages/onboarding/onboarding_screen.dart';
 import 'package:the_responsive_builder/the_responsive_builder.dart';
 
@@ -12,6 +14,21 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+ final AuthService _authService = AuthService();
+
+  User? user;
+
+  void _checkUser() {
+    setState(() {
+      user = FirebaseAuth.instance.currentUser;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUser();
+  }
   @override
   Widget build(BuildContext context) {
     final texttheme = Theme.of(context).textTheme;
@@ -46,9 +63,18 @@ class _AuthScreenState extends State<AuthScreen> {
         child: SizedBox(
           child: Column(
             children: [
-              SocialButton(title: 'Continue with Google', logo: 'assets/icons/google_logo.png', authenticate: () {  },),
-              SocialButton(title: '  Continue with email', logo: 'assets/icons/email_logo.png', authenticate: () {  },),
-              SocialButton(title: 'Continue with Facebook', logo: 'assets/icons/facebook_logo.png', authenticate: () {  },),
+              SocialButton(title: 'Continue with Google', logo: 'assets/icons/google_logo.png',
+               authenticate: () async {
+                      await _authService.signInWithGoogle(context);
+                      _checkUser();
+                },),
+                SocialButton(title: 'Continue with Facebook', logo: 'assets/icons/facebook_logo.png', authenticate: ()  {
+                     
+                  },),
+
+              SocialButton(title: '  Continue with email', logo: 'assets/icons/email_logo.png',
+               authenticate: (){}),
+              
             ],
           ),
 
@@ -104,25 +130,22 @@ class SocialButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final texttheme = Theme.of(context).textTheme;
-    return InkWell(
-      onTap: authenticate,
-      child: Padding(
-        padding: const EdgeInsets.all(6.0),
-        child: ButtonWidget(child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(logo, height: 3.5.h,),
-                
-            SizedBox(width: 0.1.h,),
-                
-            Text(
-             title,
-              style: texttheme.bodyMedium?.copyWith(color: AppColors.light),
-            )
-            
-          ],
-        ), push: (){}),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(6.0),
+      child: ButtonWidget(push: authenticate, child:  Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(logo, height: 3.5.h,),
+              
+          SizedBox(width: 0.1.h,),
+              
+          Text(
+           title,
+            style: texttheme.bodyMedium?.copyWith(color: AppColors.light),
+          )
+          
+        ],
+      )),
     );
   }
 }

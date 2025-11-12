@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:genie/Constant/color.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import 'package:the_responsive_builder/the_responsive_builder.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -20,12 +19,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (status.isGranted) {
       // Permission granted, navigate to the AR home page
       if (context.mounted) {
-        Navigator.pushReplacementNamed(context, '/Home');
+        Navigator.pushNamed(context, '/Home');
       }
     } else if (status.isDenied) {
       // Handle denied permission (e.g., show a dialog)
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Camera permission is required for AR.')),
+         SnackBar(
+          backgroundColor: AppColors.berry,
+          content: Text('Camera permission is required for AR.')),
       );
     } else if (status.isPermanentlyDenied) {
       // If permanently denied, guide the user to app settings
@@ -69,7 +70,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 children: [
                   ButtonWidget(
                     push: () { 
-                      Navigator.pushReplacementNamed(context, '/AuthScreen');
+                      Navigator.pushNamed(context, '/AuthScreen');
                      },
                     child: Center(
                       child: Text(
