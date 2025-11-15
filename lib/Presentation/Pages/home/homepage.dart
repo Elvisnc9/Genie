@@ -5,7 +5,7 @@ import 'package:ar_flutter_plugin_plus/managers/ar_location_manager.dart';
 import 'package:ar_flutter_plugin_plus/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin_plus/managers/ar_session_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:genie/Constant/color.dart';
+import 'package:genie/Features/furniture_detection_overlay.dart';
 import 'package:genie/Presentation/Pages/Authentication/google_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:the_responsive_builder/the_responsive_builder.dart';
@@ -55,6 +55,9 @@ class _HomePageState extends State<HomePage> {
             onARViewCreated: _onARViewCreated,
             planeDetectionConfig: PlaneDetectionConfig.horizontalAndVertical,
           ),
+
+
+          const FurnitureDetectionOverlay(),
 
           Positioned.fill(
             child: Padding(
@@ -107,26 +110,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
 
-                  Spacer(),
-
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: InkWell(
-                      onTap: () {},
-                      child: CircleAvatar(
-                        radius: 35,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.add,
-                          color: AppColors.dark,
-
-                          weight: 20,
-                          size: 35,
-                        ),
-                      ),
-                    ),
-                  ),
-
+              
                 ],
               ),
             ),

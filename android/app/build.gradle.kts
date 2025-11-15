@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.genie"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
     ndkVersion = "29.0.13113456"
 
     compileOptions {

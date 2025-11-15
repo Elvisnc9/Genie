@@ -47,6 +47,10 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^7.0.0
   another_flushbar: ^1.12.32
+  tflite_flutter: ^0.12.1
+  camera:
+  image: ^4.5.4
+  video_player: ^2.10.1
 
 
 dev_dependencies:
@@ -78,6 +82,7 @@ flutter:
    - assets/icons/
    - assets/images/
    - assets/animes/
+   - assets/model/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

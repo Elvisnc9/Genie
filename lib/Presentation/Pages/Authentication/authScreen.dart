@@ -33,6 +33,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     final texttheme = Theme.of(context).textTheme;
     return Scaffold(
+      backgroundColor: AppColors.mintty,
       body:Padding(
         padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 2.h),
         child: Column(

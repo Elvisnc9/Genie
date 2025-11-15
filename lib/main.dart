@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
           '/AuthScreen' : (context) => AuthScreen(),
           '/UserPage': (context) => UserPage(),
         },
-        initialRoute: isLoggedIn? '/Home' : '/'
+        initialRoute: '/'
+        // isLoggedIn? '/Home' : '/'
       ),
     );
   }
