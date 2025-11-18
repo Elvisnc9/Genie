@@ -12,18 +12,17 @@ import 'package:the_responsive_builder/the_responsive_builder.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   final prefs = await SharedPreferences.getInstance();
   final isLoggedIn = prefs.getBool('loggedIn') ?? false;
 
-
-
-  runApp(TheResponsiveBuilder(
-      builder: (context, Orientation, ScreenType)  {
+  runApp(
+    TheResponsiveBuilder(
+      builder: (context, Orientation, ScreenType) {
         return MyApp(isLoggedIn: isLoggedIn);
-      }
-    ));}
-    
+      },
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   final bool isLoggedIn;
@@ -35,15 +34,20 @@ class MyApp extends StatelessWidget {
         theme: Apptheme,
         title: 'Genie AR',
         routes: {
-          '/': (context)=> OnboardingScreen(),
-          '/Home' : (context) => HomePage(),
-          '/AuthScreen' : (context) => AuthScreen(),
+          '/': (context) => OnboardingScreen(),
+          '/Home': (context) => HomePage(),
+          '/AuthScreen': (context) => AuthScreen(),
           '/UserPage': (context) => UserPage(),
         },
-        initialRoute: '/'
+        initialRoute: '/',
         // isLoggedIn? '/Home' : '/'
       ),
     );
   }
 }
 
+
+
+
+
+//f8d52d65c500473a8cfdb62024c29348

@@ -49,9 +49,15 @@ dependencies:
   another_flushbar: ^1.12.32
   tflite_flutter: ^0.12.1
   camera:
-  image: ^4.5.4
+  image:
+  provider: 
   video_player: ^2.10.1
-
+  url_launcher: ^6.3.2
+  path_provider: 
+  http:
+  vector_math: ^2.1.0
+  archive: 
+  path:
 
 dev_dependencies:
   flutter_test: 

@@ -24,7 +24,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ..initialize().then((_){
       _controller.setLooping(true);
       _controller.play();
-      _controller.setVolume(10);
+      _controller.setVolume(0);
 
       setState(() => _isReady = true);
     });
