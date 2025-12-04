@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:genie/Constant/theme.dart';
 import 'package:genie/Presentation/Pages/Authentication/authScreen.dart';
+import 'package:genie/Presentation/Pages/Product_View/product_view.dart';
 import 'package:genie/Presentation/Pages/User/userPage.dart';
 import 'package:genie/Presentation/Pages/home/homepage.dart';
 import 'package:genie/Presentation/Pages/onboarding/onboarding_screen.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           '/Home': (context) => HomePage(),
           '/AuthScreen': (context) => AuthScreen(),
           '/UserPage': (context) => UserPage(),
+          '/ProductView': (context) => ProductView(),
         },
         initialRoute: '/',
         // isLoggedIn? '/Home' : '/'

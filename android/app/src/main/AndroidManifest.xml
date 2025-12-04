@@ -8,7 +8,8 @@
     <application
         android:label=" GENIE"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:usesCleartextTraffic="true">
 <!-- Add this metadata inside the <application> tag to ensure ARCore is required -->
         <activity
             android:name=".MainActivity"

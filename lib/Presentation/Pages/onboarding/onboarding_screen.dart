@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:genie/Constant/color.dart';
+import 'package:genie/Presentation/Widgets/buttonWidget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:the_responsive_builder/the_responsive_builder.dart';
 import 'package:video_player/video_player.dart';
@@ -114,11 +115,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         push: () { 
                           Navigator.pushNamed(context, '/AuthScreen');
                          },
+                        color: AppColors.light,
                         child: Center(
                           child: Text(
                             'Sign in',
                             style: texttheme.displayLarge?.copyWith(
-                              color: AppColors.light,
+                              color: AppColors.dark,
                               fontSize: 18.sp,
                             ),
                           ),
@@ -146,25 +148,3 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-class ButtonWidget extends StatelessWidget {
-  const ButtonWidget({super.key, required this.child, required this.push});
-
-  final Widget child;
-  final VoidCallback push;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: push,
-      child: Container(
-        height: 7.h,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: AppColors.dark,
-        ),
-        child: child,
-      ),
-    );
-  }
-}
