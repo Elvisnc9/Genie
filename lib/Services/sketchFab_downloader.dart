@@ -1,13 +1,3 @@
-// robust Sketchfab download helper + debug helpers
-// - recursively searches model JSON for URLs ending with .glb/.gltf/.zip
-// - exposes a public helper to collect all URL-like strings for debugging
-// - downloads a direct .glb/.gltf or a ZIP, extracts it and returns the local .glb/.gltf path
-//
-// Usage:
-// final urls = SketchfabDownloader.collectAllUrlsFromModelJson(full.raw);
-// debugPrint(urls.join('\n'));
-// final path = await SketchfabDownloader.downloadModelAssetFromModelJson(full.raw);
-
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
@@ -71,13 +61,11 @@ class SketchfabDownloader {
           }
         }
       }
-
       return null;
     } catch (e) {
-      print('SketchfabDownloader error: $e');
       return null;
     } finally {
-      client?.close();
+      client.close();
     }
   }
 
@@ -90,9 +78,13 @@ class SketchfabDownloader {
         final s = n.trim();
         if (_looksLikeUrl(s)) urls.add(s);
       } else if (n is Map) {
-        for (final v in n.values) walk(v);
+        for (final v in n.values) {
+          walk(v);
+        }
       } else if (n is Iterable) {
-        for (final v in n) walk(v);
+        for (final v in n) {
+          walk(v);
+        }
       }
     }
 

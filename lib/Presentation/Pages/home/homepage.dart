@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:ar_flutter_plugin_plus/ar_flutter_plugin.dart';
 import 'package:ar_flutter_plugin_plus/datatypes/config_planedetection.dart';
 import 'package:ar_flutter_plugin_plus/managers/ar_anchor_manager.dart';

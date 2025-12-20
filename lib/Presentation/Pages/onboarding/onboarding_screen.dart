@@ -44,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (status.isGranted) {
       // Permission granted, navigate to the AR home page
       if (context.mounted) {
-        Navigator.pushNamed(context, '/Home');
+        Navigator.pushNamed(context, '/ProductView');
       }
     } else if (status.isDenied) {
       // Handle denied permission (e.g., show a dialog)

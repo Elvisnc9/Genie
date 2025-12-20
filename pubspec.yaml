@@ -64,6 +64,7 @@ dependencies:
   cached_network_image: ^3.4.1 # ← Cache thumbnail images
   dio: ^5.7.0 
   model_viewer_plus:
+  webview_flutter: 
 
 dev_dependencies:
   flutter_test: 
