@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:genie/Presentation/Widgets/caurosel.dart';
+import 'package:genie/Presentation/Pages/Product_View/furniture_Model.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:math';
@@ -52,11 +52,11 @@ class _ProductViewState extends State<ProductView> {
                     disableZoom: true,
                     autoRotate: true,
                     cameraControls: true,
-                    cameraOrbit: '45deg 75deg 2.5m',                        
-                   fieldOfView: '30deg',
+                    cameraOrbit: '45deg 75deg 2.9m',                        
+                    fieldOfView: '30deg',
 
                    
-              // maxCameraOrbit: '90deg 150deg 4.0m',
+                
 
                   shadowIntensity: 0.8,
                     backgroundColor: Colors.transparent,
@@ -230,75 +230,4 @@ class _CurvedCarouselState extends State<CurvedCarousel> {
 
 
 
-
-
-class FurnitureModel {
-  final String name;
-  final String price;
-  final String modelUrl;
-  final String thumbnail;
-
-  FurnitureModel({
-    required this.name,
-    required this.price,
-    required this.modelUrl,
-    required this.thumbnail,
-  });
-}
-
-
-final furnitureList = [
-  FurnitureModel(
-    name: "Modern Chair",
-    price: "\$120.80",
-    modelUrl:
-        "assets/model/office_chair_gaming_chair.glb",
-    thumbnail: "assets/images/model_Images/3dd.png",
-  ),
-  
-  FurnitureModel(
-    name: "luxurious royal sofa",
-    price: "\$340.50",
-    modelUrl:
-        "assets/model/luxurious_royal_sofa_with_pillows_two_seats..glb",
-    thumbnail: "assets/images/model_Images/luxxryNwanne.png",
-  ),
- 
-  FurnitureModel(
-    name: "nicola_sofa",
-    price: "\$120.80",
-    modelUrl:
-        "assets/model/nicola_sofa.glb",
-    thumbnail: "assets/images/model_Images/noramll.png",
-  ),
-  FurnitureModel(
-    name: "luxury_Brown Stripped sofa",
-    price: "\$340.50",
-    modelUrl:
-        "assets/model/luxury_sofa.glb",
-    thumbnail: "assets/images/model_Images/sofaa.png",
-  ),
-  FurnitureModel(
-    name: "antique_Outdoor Sofa",
-    price: "\$210.00",
-    modelUrl:
-        "assets/model/antique_sofa.glb",
-    thumbnail: "assets/images/model_Images/OutdoorSofa.png",
-  ),
-  FurnitureModel(
-    name: "Modern Chair",
-    price: "\$120.80",
-    modelUrl:
-        "assets/model/chesterfield-sofa.glb",
-    thumbnail: "assets/images/model_Images/coach.jpg",
-  ),
- 
-   FurnitureModel(
-    name: "metaretail_sofa_denim Style",
-    price: "\$120.80",
-    modelUrl:
-        "assets/model/metaretail_sofa_denim.glb",
-    thumbnail: "assets/images/model_Images/jeanssofa.png",
-  ),
-];
 
