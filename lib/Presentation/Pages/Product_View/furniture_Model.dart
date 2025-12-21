@@ -33,7 +33,7 @@ final furnitureList = [
 
 
   FurnitureModel(
-    name: "haru_single_sofa_bed_butter",
+    name: "haru_single_sofa",
     price: "\$2000.80",
     modelUrl:
         "assets/model/haru_single_sofa_bed_butter_yellow.glb",
