@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           '/UserPage': (context) => UserPage(),
           '/ProductView': (context) => ProductView(),
         },
-        initialRoute: '/ProductView',
+        initialRoute: '/',
         // isLoggedIn? '/Home' : '/'
       ),
     );

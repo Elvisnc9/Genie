@@ -1,5 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,57 +75,54 @@ class AuthService {
     }
   }
 
-  Future<void> signOut(BuildContext context) async {
-    await GoogleSignIn().signOut();
-    await _auth.signOut();
+Future<void> signOut(BuildContext context) async {
+  await GoogleSignIn().signOut();
+  await _auth.signOut();
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
 
-    Navigator.pushReplacementNamed(context, '/AuthScreen');
-  }
+  Navigator.pushReplacementNamed(context, '/AuthScreen');
 }
 
+// ----------------- FACEBOOK SIGN-IN -----------------
+Future<UserCredential?> signInWithFacebook(BuildContext context) async {
+    try {
+      // Start the Facebook login process
+      final LoginResult loginResult = await FacebookAuth.instance.login();
 
-//   // ----------------- FACEBOOK SIGN-IN -----------------
-//   Future<UserCredential?> signInWithFacebook(BuildContext context) async {
-//     try {
-//       // Start the Facebook login process
-//       final LoginResult loginResult = await FacebookAuth.instance.login();
+      if (loginResult.status == LoginStatus.success) {
+        final OAuthCredential credential = FacebookAuthProvider.credential(
+          loginResult.accessToken!.tokenString,
+        );
 
-//       if (loginResult.status == LoginStatus.success) {
-//         final OAuthCredential credential = FacebookAuthProvider.credential(
-//           loginResult.accessToken!.tokenString,
-//         );
+        final userCredential = await _auth.signInWithCredential(credential);
 
-//         final userCredential = await _auth.signInWithCredential(credential);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('Welcome, ${userCredential.user?.displayName ?? "User"}!'),
+            backgroundColor: Colors.green,
+          ),
+        );
 
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(
-//             content:
-//                 Text('Welcome, ${userCredential.user?.displayName ?? "User"}!'),
-//             backgroundColor: Colors.green,
-//           ),
-//         );
-
-//         return userCredential;
-//       } else if (loginResult.status == LoginStatus.cancelled) {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(content: Text('Facebook login cancelled')),
-//         );
-//         return null;
-//       } else {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(content: Text('Facebook login failed: ${loginResult.status}')),
-//         );
-//         return null;
-//       }
-//     } catch (e) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('Facebook Sign-In Error: $e')),
-//       );
-//       return null;
-//     }
-//   }
-
-// }
+        return userCredential;
+      } else if (loginResult.status == LoginStatus.cancelled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Facebook login cancelled')),
+        );
+        return null;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Facebook login failed: ${loginResult.status}')),
+        );
+        return null;
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Facebook Sign-In Error: $e')),
+      );
+      return null;
+    }
+  }
+}

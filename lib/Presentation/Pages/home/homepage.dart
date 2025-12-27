@@ -100,20 +100,7 @@ class _HomePageState extends State<HomePage>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // left: circle "more" - matches shape/size in your example
-                      InkWell(
-                        onTap: () {
-                          if (Navigator.canPop(context)) Navigator.pop(context);
-                        },
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColors.light.withOpacity(0.95),
-                          child: const Icon(
-                            Icons.more_horiz,
-                            color: AppColors.dark,
-                            size: 25,
-                          ),
-                        ),
-                      ),
+                     
 
                       // center title
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:genie/Constant/color.dart';
+import 'package:genie/Presentation/Pages/Product_View/full_view.dart' show FullViewPage;
 import 'package:genie/Presentation/Pages/Product_View/furniture_Model.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:the_responsive_builder/the_responsive_builder.dart';
@@ -44,7 +45,7 @@ class _ProductViewState extends State<ProductView> {
   Widget build(BuildContext context) {
     final selectedItem = furnitureList[selectedIndex];
     return Scaffold(
-      backgroundColor: AppColors.berry,
+      backgroundColor: AppColors.dark,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,36 +73,19 @@ class _ProductViewState extends State<ProductView> {
               child: Stack(
                 alignment: Alignment.bottomLeft,
                 children: [
-              
-               Hero(
-  tag: 'model-${selectedItem.name}',
-  flightShuttleBuilder: (
-    flightContext,
-    animation,
-    flightDirection,
-    fromHeroContext,
-    toHeroContext,
-  ) {
-    return ScaleTransition(
-      scale: Tween(begin: 1.0, end: 1.25).animate(
-        CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeInOut,
-        ),
-      ),
-      child: fromHeroContext.widget, // ✅ SAFE
-    );
-  },
-  child: ModelViewer(
-    src: selectedItem.modelUrl,
-    autoRotate: true,
-    cameraControls: true,
-    disableZoom: true,
-    backgroundColor: Colors.transparent,
-  ),
-),
+                  ModelViewer(
+                    key: ValueKey(selectedItem.modelUrl),
+                    src: selectedItem.modelUrl,
+                    disableZoom: true,
+                    autoRotate: true,
+                    cameraControls: true,
+                    ar: true,
+                  
+                    backgroundColor: Colors.transparent,
+                  ),
+
                   Positioned(
-                    top: 180,
+                    top: 200,
                     left: 25,
                     child: Floating_info_card(
                           selectedItem: selectedItem,
