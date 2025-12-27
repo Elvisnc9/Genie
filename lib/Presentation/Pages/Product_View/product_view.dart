@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:genie/Constant/color.dart';
-import 'package:genie/Presentation/Pages/Product_View/full_view.dart';
 import 'package:genie/Presentation/Pages/Product_View/furniture_Model.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:the_responsive_builder/the_responsive_builder.dart';
@@ -19,7 +18,6 @@ class _ProductViewState extends State<ProductView> {
   int selectedIndex = 0;
   late WebViewController _webController;
   bool exiting = false;
-  bool _isFullView = false;
 
   // helper to apply camera + rotation settings
   void _applyModelViewerSettings({
@@ -40,7 +38,7 @@ class _ProductViewState extends State<ProductView> {
         "}",
       );
     } catch (_) {}
-  }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -57,106 +55,79 @@ class _ProductViewState extends State<ProductView> {
                 .fadeOut(duration: 600.ms)
                 .slideY(begin: 0, end: -0.2),
 
-                 if(exiting) Align(
-                  alignment: Alignment.topLeft,
-                   child: IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white),
-                      onPressed: ()async{
-                        setState(() => exiting = false);
-                        await Future.delayed(
-                          const Duration(milliseconds: 500),
-                        );
-                    
-                      },),
-                 ),
-               
+            if (exiting)
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  onPressed: () async {
+                    setState(() => exiting = false);
+                    await Future.delayed(const Duration(milliseconds: 500));
+                  },
+                ),
+              ),
 
             // 🪑 3D MODEL VIEWER
             Expanded(
               child: Stack(
                 alignment: Alignment.bottomLeft,
                 children: [
-
-                  
-                  Hero(
-                    tag: 'model-${selectedItem.name}',
-                    flightShuttleBuilder: (_, animation, __, ___, ____) {
-                      return ScaleTransition(
-                        scale: animation.drive(
-                          Tween(
-                            begin: 1.0,
-                            end: 1.15,
-                          ).chain(CurveTween(curve: Curves.easeInOut)),
-                        ),
-                        child: ModelViewer(
-                          src: selectedItem.modelUrl,
-                          autoRotate: true,
-                          cameraControls: true,
-                          ar:  true ,
-                          backgroundColor: Colors.transparent,
-                        ),
-                      );
-                    },
-                    child: ModelViewer(
-                      key: ValueKey(selectedItem.modelUrl),
-                      src: selectedItem.modelUrl,
-                      disableZoom: true,
-                      autoRotate: true,
-                      cameraControls: true,
-                      ar: _isFullView? true : false ,
-                      backgroundColor: Colors.transparent,
-                    ),
-                  ),
-
-
-                
-
-                   Positioned(
-                  top: 160,
-                  left: 25,
-                  child: Floating_info_card(
+              
+               Hero(
+  tag: 'model-${selectedItem.name}',
+  flightShuttleBuilder: (
+    flightContext,
+    animation,
+    flightDirection,
+    fromHeroContext,
+    toHeroContext,
+  ) {
+    return ScaleTransition(
+      scale: Tween(begin: 1.0, end: 1.25).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOut,
+        ),
+      ),
+      child: fromHeroContext.widget, // ✅ SAFE
+    );
+  },
+  child: ModelViewer(
+    src: selectedItem.modelUrl,
+    autoRotate: true,
+    cameraControls: true,
+    disableZoom: true,
+    backgroundColor: Colors.transparent,
+  ),
+),
+                  Positioned(
+                    top: 180,
+                    left: 25,
+                    child: Floating_info_card(
                           selectedItem: selectedItem,
                           press: () async {
                             debugPrint("Pressed");
                             setState(() => exiting = true);
-                  
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                transitionDuration: const Duration(
+                                  milliseconds: 700,
+                                ),
+                                pageBuilder:
+                                    (_, __, ___) =>
+                                        FullViewPage(item: selectedItem),
+                              ),
+                            );
                             await Future.delayed(
                               const Duration(milliseconds: 500),
                             );
-                  
-                  
-                            
                           },
                         )
                         .animate(target: exiting ? 1 : 0)
                         .fadeOut(duration: 300.ms)
                         .scaleXY(begin: 1, end: 0.9),
-                ),
-
-                  // ModelViewer(
-                  //   key: ValueKey(selectedItem.modelUrl),
-                  //   src: selectedItem.modelUrl,
-                  //   alt: selectedItem.name,
-                  //   disableZoom: true,
-                  //   autoRotate: true,
-                  //   cameraControls: true,
-                  //   cameraOrbit: '40deg 75deg 1.8m',
-                  //   fieldOfView: '30deg',
-
-                  // shadowIntensity: 0.8,
-                  //   backgroundColor: Colors.transparent,
-
-                  // onWebViewCreated: (controller) {
-                  //     _webController = controller;
-                  //     // apply settings immediately when webview is ready
-                  //     _applyModelViewerSettings();
-                  //   },
-                  // ),
-
-                  // 💳 Floating Info Card
-                  
-                   
-
+                  ),
 
                   Positioned(
                         child: CurvedCarousel(
@@ -188,6 +159,80 @@ class _ProductViewState extends State<ProductView> {
     );
   }
 }
+
+
+
+
+class FullViewPage extends StatefulWidget {
+  final FurnitureModel item;
+
+  const FullViewPage({super.key, required this.item});
+
+  @override
+  State<FullViewPage> createState() => _FullViewPageState();
+}
+
+class _FullViewPageState extends State<FullViewPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Center(
+            child: ScaleTransition(
+              scale: Tween(begin: 0.95, end: 1.1).animate(
+                CurvedAnimation(
+                  parent: _controller,
+                  curve: Curves.easeOut,
+                ),
+              ),
+              child: Hero(
+                tag: 'model-${widget.item.name}',
+                child: ModelViewer(
+                  src: widget.item.modelUrl,
+                  cameraControls: true,
+                  autoRotate: false,
+                  disableZoom: false,
+                  ar: true,
+                  arModes: const [
+                    'scene-viewer',
+                    'webxr',
+                    'quick-look'
+                  ],
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 24,
+            left: 16,
+            child: IconButton(
+              icon: const Icon(Icons.close, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 class Floating_info_card extends StatelessWidget {
   const Floating_info_card({
@@ -221,9 +266,9 @@ class Floating_info_card extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-    
+
           SizedBox(width: 10),
-    
+
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 20),
             child: Column(
@@ -238,11 +283,17 @@ class Floating_info_card extends StatelessWidget {
                 ),
 
                 TextButton(
-                  onPressed: press, 
-                  child:  Text("View Now ", 
-                  style: TextStyle(color: Colors.orangeAccent,
-                   fontWeight: FontWeight.bold, fontSize: 16.sp)))
-    
+                  onPressed: press,
+                  child: Text(
+                    "View Now ",
+                    style: TextStyle(
+                      color: Colors.orangeAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                ),
+
                 // GestureDetector(
                 //   onTap: press,`
                 //   child: Text(
