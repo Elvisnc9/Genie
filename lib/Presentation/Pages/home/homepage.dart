@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:ar_flutter_plugin_plus/ar_flutter_plugin.dart';
 import 'package:ar_flutter_plugin_plus/datatypes/config_planedetection.dart';
@@ -6,15 +7,12 @@ import 'package:ar_flutter_plugin_plus/managers/ar_location_manager.dart';
 import 'package:ar_flutter_plugin_plus/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin_plus/managers/ar_session_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:genie/Constant/color.dart';
-import 'package:genie/Presentation/Pages/home/downPanel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:genie/Presentation/Pages/Authentication/google_auth.dart';
 import 'package:the_responsive_builder/the_responsive_builder.dart';
+enum AppState{ai, self}
 
-/// HomePage UI stacked on top of ARView (ARView is used as a visual background only).
-/// No AR object placement logic is added beyond the required onARViewCreated hook.
-/// Uses Image.asset for all non-AR images (make sure assets are added to pubspec.yaml).
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -22,30 +20,19 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> {
   late ARSessionManager arSessionManager;
   late ARAnchorManager arAnchorManager;
   late ARObjectManager arObjectManager;
 
   String userName = '';
-  final authService = AuthService();
+   AppState _mode = AppState.self;
 
-  // UI
-  bool _isPanelOpen = false;
-  late final AnimationController _buttonPulseController;
-
+ 
   @override
   void initState() {
     super.initState();
-    loadUserData();
-
-    _buttonPulseController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-      lowerBound: 0.0,
-      upperBound: 1.0,
-    )..repeat(reverse: true);
+    _loadUserData();
   }
 
   @override
@@ -53,132 +40,96 @@ class _HomePageState extends State<HomePage>
     try {
       arSessionManager.dispose();
     } catch (_) {}
-    _buttonPulseController.dispose();
     super.dispose();
   }
 
-  Future<void> loadUserData() async {
+  // Async but don't await - load in background
+  void _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     if (!mounted) return;
-    setState(() {
-      userName = prefs.getString('userName') ?? 'User';
-    });
+    final name = prefs.getString('userName') ?? 'User';
+    if (userName != name) {
+      setState(() => userName = name);
+    }
   }
 
-  void _togglePanel() async {
-    setState(() => _isPanelOpen = true);
-    await showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => Downpanel(onClose: () => Navigator.of(context).pop()),
-    );
+
+  void _navigateToProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isLoggedIn = prefs.getBool('loggedIn') ?? false;
+    
     if (!mounted) return;
-    setState(() => _isPanelOpen = false);
+    Navigator.pushNamed(
+      context,
+      isLoggedIn ? '/UserPage' : '/AuthScreen',
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // ARView as the background — keep it full screen
-          ARView(
-            onARViewCreated: _onARViewCreated,
-            planeDetectionConfig: PlaneDetectionConfig.horizontalAndVertical,
+
+          Positioned.fill(
+  child: _animatedModeContent(),
+),
+
+          // ARView as background
+           Positioned.fill(
+            child: ARView(
+              onARViewCreated: _onARViewCreated,
+              planeDetectionConfig: PlaneDetectionConfig.horizontalAndVertical,
+            ),
           ),
 
-          // Top UI & title stacked on top of ARView (safe area)
+          // Top UI layer with glassmorphism
           Positioned(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 4.h),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // left: circle "more" - matches shape/size in your example
-                     
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 2.h,
+                  vertical: 2.h,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
 
-                      // center title
-
-                      // right: profile avatar
-                      SizedBox(width: 2.w),
-                      
-                      InkWell(
-                        onTap: () async {
-                          final prefs =
-                              await SharedPreferences.getInstance();
-                          final isLoggedIn =
-                              prefs.getBool('loggedIn') ?? false;
-                          if (isLoggedIn) {
-                            Navigator.pushNamed(context, '/UserPage');
-                          } else {
-                            Navigator.pushNamed(context, '/AuthScreen');
-                          }
-                        },
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColors.light.withOpacity(
-                            0.95,
-                          ),
-                          child: const Icon(
-                            Icons.person_2_outlined,
-                            color: AppColors.dark,
-                            size: 20,
-                          ),
-                        ),
+                    Spacer(),
+                    //I need a Tabbar here 
+                    _modeSwitch(),
+                   const Spacer(),
+                    // Profile button with micro-interaction
+                    Button(
+                      onTap: _navigateToProfile,
+                      child: const Icon(
+                        Icons.person_2_outlined,
+                        color: AppColors.light,
+                        size: 30,
                       ),
-                    ],
-                  ),
-
-                  // spacer so top row stays at top
-                  const Spacer(),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
 
-          // Bottom center add (+) button — pulsing while panel closed
+          // Bottom FAB with instant feedback
           Positioned(
             bottom: 40,
             left: 0,
             right: 0,
-            child: Center(
-              child: GestureDetector(
-                onTap: _togglePanel,
-                child:  Container(
-                        width: 55,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.light.withOpacity(0.96),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
-                              blurRadius: 10 ,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          _isPanelOpen ? Icons.close_rounded : Icons.add,
-                          color: Colors.black,
-                          size: 34,
-                        ),
-                      ),
-                    
-              ),
-            ),
+            child: Button(child: Icon(Icons.add_rounded, size: 40, color: AppColors.light),
+             onTap: (){})
           ),
         ],
       ),
     );
   }
-
-
 
   void _onARViewCreated(
     ARSessionManager sessionManager,
@@ -186,24 +137,162 @@ class _HomePageState extends State<HomePage>
     ARAnchorManager anchorManager,
     ARLocationManager locationManager,
   ) {
-    // keep references so disposal is safe — no extra AR logic is added
     arSessionManager = sessionManager;
     arObjectManager = objectManager;
     arAnchorManager = anchorManager;
 
-    // minimal initialization to keep ARView happy (no object management added)
     arSessionManager.onInitialize(
       showFeaturePoints: false,
       showPlanes: true,
       showWorldOrigin: false,
       handleTaps: false,
-      showAnimatedGuide: false
+      showAnimatedGuide: false,
     );
     arObjectManager.onInitialize();
   }
+
+
+  Widget _modeSwitch() {
+  return Container(
+    height: 44,
+    width: 180,
+    padding: const EdgeInsets.all(4),
+    decoration: BoxDecoration(
+      color: Colors.black.withOpacity(0.3),
+      borderRadius: BorderRadius.circular(30),
+      border: Border.all(color: Colors.white24),
+    ),
+    child: Row(
+      children: [
+        _modeButton("Self", AppState.self),
+        _modeButton("AI", AppState.ai),
+      ],
+    ),
+  );
 }
 
-/// Simple visual overlay that sits above the ARView: center reticle + subtle hint.
-/// The modal panel content shown when the + button is tapped.
-/// Uses local assets (Image.asset). Replace asset paths to match your project.
-/// 
+
+
+Widget _modeButton(String text, AppState mode) {
+  final selected = _mode == mode;
+  return Expanded(
+    child: GestureDetector(
+      onTap: () {
+        setState(() => _mode = mode);
+        HapticFeedback.mediumImpact();
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeOut,
+        decoration: BoxDecoration(
+          color: selected ? Colors.white.withOpacity(0.9) : Colors.transparent,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: selected ? Colors.black : Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+
+Widget _animatedModeContent() {
+  return AnimatedSwitcher(
+    duration: const Duration(milliseconds: 600),
+    switchInCurve: Curves.easeOutBack,
+    switchOutCurve: Curves.easeIn,
+    transitionBuilder: (child, animation) {
+      final rotate = Tween(begin: pi, end: 0.0).animate(animation);
+      return AnimatedBuilder(
+        animation: rotate,
+        child: child,
+        builder: (context, child) {
+          final isUnder = (ValueKey(_mode) != child!.key);
+          final tilt = isUnder ? min(rotate.value, pi / 2) : rotate.value;
+          return Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(tilt),
+            alignment: Alignment.center,
+            child: child,
+          );
+        },
+      );
+    },
+    child: _mode == AppState.self
+        ? SelfModeOverlay(key: const ValueKey("self"))
+        : AiModeOverlay(key: const ValueKey("ai")),
+  );
+}
+
+
+}
+
+// Reusable glass button with instant feedback
+class Button extends StatelessWidget {
+  const Button({super.key, required this.child, required this.onTap});
+
+  final Widget child;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return  InkWell(
+         onTap: onTap,
+        child: child,
+     
+    );
+  }
+}
+
+// Animated FAB with instant visual feedback
+
+
+
+class SelfModeOverlay extends StatelessWidget {
+  const SelfModeOverlay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          "SELF MODE",
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.7),
+            fontSize: 14,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AiModeOverlay extends StatelessWidget {
+  const AiModeOverlay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          "AI MODE",
+          style: TextStyle(
+            color: Colors.cyanAccent,
+            fontSize: 14,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+    );
+  }
+}

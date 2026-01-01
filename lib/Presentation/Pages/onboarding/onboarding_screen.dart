@@ -50,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       // Handle denied permission (e.g., show a dialog)
       ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(
-          backgroundColor: AppColors.berry,
+          backgroundColor: AppColors.dark,
           content: Text('Camera permission is required for AR.')),
       );
     } else if (status.isPermanentlyDenied) {
