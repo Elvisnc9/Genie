@@ -72,10 +72,6 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
 
-          Positioned.fill(
-  child: _animatedModeContent(),
-),
-
           // ARView as background
            Positioned.fill(
             child: ARView(
