@@ -1,0 +1,230 @@
+{
+  "_note": "Seed data for development. Names and dimensions for Lune and Nord come from the mockups; everything else is placeholder. No prices on purpose (undecided). Models: SheenChair (CC0) and GlamVelvetSofa (CC BY 4.0, Eric Chadwick / Wayfair) from KhronosGroup/glTF-Sample-Assets, scaled so their width matches the catalog width (see tool/model_bounds.py).",
+  "categories": [
+    {
+      "id": "armchairs",
+      "name": "Armchairs"
+    },
+    {
+      "id": "sofas",
+      "name": "Sofas"
+    },
+    {
+      "id": "chairs",
+      "name": "Chairs"
+    },
+    {
+      "id": "tables",
+      "name": "Tables"
+    },
+    {
+      "id": "lighting",
+      "name": "Lighting"
+    },
+    {
+      "id": "plants",
+      "name": "Plants"
+    }
+  ],
+  "collections": [
+    {
+      "id": "living-room",
+      "name": "Living room",
+      "image": "assets/images/collection_living_room.jpg",
+      "items": [
+        "lune-armchair",
+        "haven-sofa",
+        "arc-floor-lamp",
+        "orbit-side-table",
+        "fiddle-leaf-fig"
+      ]
+    },
+    {
+      "id": "reading-corner",
+      "name": "Reading corner",
+      "image": "assets/images/collection_reading_corner.jpg",
+      "items": [
+        "lune-armchair",
+        "arc-floor-lamp",
+        "orbit-side-table",
+        "fiddle-leaf-fig"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "lune-armchair",
+      "name": "Lune armchair",
+      "category": "armchairs",
+      "description": "Deep seat, rounded arms and a bouclé you'll want to touch.",
+      "dimensions": {
+        "width": 80,
+        "depth": 74,
+        "height": 82
+      },
+      "isNew": true,
+      "model": "assets/models/lune_armchair.glb",
+      "defaultFabric": "terracotta",
+      "fabrics": [
+        {
+          "id": "oat",
+          "name": "Oat bouclé",
+          "hex": "#E6DCCB",
+          "image": "assets/images/chair_lune_oat.png"
+        },
+        {
+          "id": "terracotta",
+          "name": "Terracotta bouclé",
+          "hex": "#C8693F",
+          "image": "assets/images/chair_lune_terracotta.png"
+        },
+        {
+          "id": "sage",
+          "name": "Sage bouclé",
+          "hex": "#8E9E80",
+          "image": "assets/images/chair_lune_sage.png"
+        },
+        {
+          "id": "navy",
+          "name": "Navy bouclé",
+          "hex": "#2E3748",
+          "image": "assets/images/chair_lune_navy.png"
+        }
+      ],
+      "modelScale": 0.967
+    },
+    {
+      "id": "nord-dining-chair",
+      "name": "Nord dining chair",
+      "category": "chairs",
+      "description": "A slim steel frame with a padded seat and back.",
+      "dimensions": {
+        "width": 48,
+        "depth": 46,
+        "height": 82
+      },
+      "isNew": false,
+      "model": null,
+      "defaultFabric": "cornflower",
+      "fabrics": [
+        {
+          "id": "cornflower",
+          "name": "Cornflower",
+          "hex": "#5B87C5",
+          "image": "assets/images/piece_nord.png"
+        },
+        {
+          "id": "charcoal",
+          "name": "Charcoal",
+          "hex": "#3A3D42"
+        }
+      ]
+    },
+    {
+      "id": "haven-sofa",
+      "name": "Haven 3-seat sofa",
+      "category": "sofas",
+      "description": "Three deep cushions on a low frame.",
+      "dimensions": {
+        "width": 210,
+        "depth": 88,
+        "height": 80
+      },
+      "isNew": false,
+      "model": "assets/models/haven_sofa.glb",
+      "defaultFabric": "chalk",
+      "fabrics": [
+        {
+          "id": "chalk",
+          "name": "Chalk",
+          "hex": "#E8E2D6"
+        },
+        {
+          "id": "sage",
+          "name": "Sage",
+          "hex": "#A9BFA0"
+        }
+      ],
+      "modelScale": 0.96
+    },
+    {
+      "id": "arc-floor-lamp",
+      "name": "Arc floor lamp",
+      "category": "lighting",
+      "description": "A long brass arc that reaches over a sofa or chair.",
+      "dimensions": {
+        "width": 40,
+        "depth": 100,
+        "height": 190
+      },
+      "isNew": true,
+      "model": null,
+      "defaultFabric": "brass",
+      "fabrics": [
+        {
+          "id": "brass",
+          "name": "Brass",
+          "hex": "#B8955A",
+          "image": "assets/images/piece_arc_lamp.png"
+        },
+        {
+          "id": "black",
+          "name": "Matte black",
+          "hex": "#2A2A2A"
+        }
+      ]
+    },
+    {
+      "id": "orbit-side-table",
+      "name": "Orbit side table",
+      "category": "tables",
+      "description": "A round top on a single fluted base.",
+      "dimensions": {
+        "width": 45,
+        "depth": 45,
+        "height": 55
+      },
+      "isNew": false,
+      "model": null,
+      "defaultFabric": "oak",
+      "fabrics": [
+        {
+          "id": "oak",
+          "name": "Oak",
+          "hex": "#C99B6B"
+        },
+        {
+          "id": "walnut",
+          "name": "Walnut",
+          "hex": "#7A5236"
+        }
+      ]
+    },
+    {
+      "id": "fiddle-leaf-fig",
+      "name": "Fiddle-leaf fig",
+      "category": "plants",
+      "description": "Big glossy leaves for an empty corner.",
+      "dimensions": {
+        "width": 50,
+        "depth": 50,
+        "height": 150
+      },
+      "isNew": false,
+      "model": null,
+      "defaultFabric": "white",
+      "fabrics": [
+        {
+          "id": "white",
+          "name": "White pot",
+          "hex": "#EFEDE8"
+        },
+        {
+          "id": "terracotta",
+          "name": "Terracotta pot",
+          "hex": "#C8693F"
+        }
+      ]
+    }
+  ]
+}

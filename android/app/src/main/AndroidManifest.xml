@@ -1,16 +1,21 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 <uses-sdk android:minSdkVersion="24" />
         <uses-permission android:name="android.permission.CAMERA" />
 <!-- ARCore specific features -->
 <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
 <!-- You may also need internet if loading models from the web -->
 <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Genie only needs the camera: drop the AR plugin's location permission
+         (it is for geo anchors, which Genie does not use). -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
     <application
-        android:label=" GENIE"
+        android:label="Genie"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon"
-        android:usesCleartextTraffic="true">
-<!-- Add this metadata inside the <application> tag to ensure ARCore is required -->
+        android:icon="@mipmap/launcher_icon">
+        <!-- AR Required: Play installs ARCore with the app (the plugin says optional). -->
+        <meta-data android:name="com.google.ar.core" android:value="required" tools:replace="android:value" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

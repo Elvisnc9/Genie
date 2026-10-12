@@ -1,43 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:genie/Constant/theme.dart';
-import 'package:genie/core/appshell.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:the_responsive_builder/the_responsive_builder.dart';
+import 'app/app.dart';
+import 'core/data/preferences.dart';
+import 'core/theme/theme.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
- 
-
-
-  runApp(
-    TheResponsiveBuilder(
-      builder: (context, Orientation, ScreenType) {
-        return ProviderScope(child: MyApp());
-      },
-    ),
-  );
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(GenieTheme.systemUi);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  final prefs = await SharedPreferences.getInstance();
+  runApp(ProviderScope(overrides: [sharedPreferencesProvider.overrideWithValue(prefs)], child: const GenieApp()));
 }
-
-class MyApp extends StatelessWidget {
- 
-  const MyApp({super.key,});
-  @override
-  Widget build(BuildContext context) {
-    return  MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: Apptheme,
-        title: 'Genie AR',
-    
-    home: Appshell()
-    );
-  }
-}
-
-
-
-
-
-//f8d52d65c500473a8cfdb62024c29348
