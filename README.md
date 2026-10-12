@@ -10,26 +10,6 @@
 </p>
 
 ---
-
-## Contents
-
-- [What Genie is](#what-genie-is)
-- [Where the project is today](#where-the-project-is-today)
-- [Screens](#screens)
-- [The vision](#the-vision)
-- [Roadmap](#roadmap)
-- [Tech stack](#tech-stack)
-- [Getting started](#getting-started)
-- [Project structure](#project-structure)
-- [Design system](#design-system)
-- [Motion](#motion)
-- [Testing](#testing)
-- [Tooling](#tooling)
-- [Known limitations](#known-limitations)
-- [Credits](#credits)
-
----
-
 ## What Genie is
 
 Genie answers one question while you are standing in a room: **will this piece fit here, and will it look right?**
